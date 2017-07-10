@@ -1,0 +1,23 @@
+docker:
+  swarm:
+    adv-addr: 192.168.1.1
+  service:
+    myservice1:
+      service_type: compose
+      git: https://github.com/myuser/myservice1.git
+      local_dir: myservice1
+      build:
+        myservice1: Dockerfile
+      compose_file: docker-compose.yml
+      template_file:
+        something.conf:
+          source: salt://myservice1/files/something.conf.jinja
+          target: /srv/docker/myservice1/something.conf
+          type: jinja
+    myservice2:
+      service_type: swarm
+      git: https://github.com/myuser/myservice2.git
+      local_dir: myservice2
+      build:
+        myservice2: Dockerfile
+      compose_file: docker-compose.yml

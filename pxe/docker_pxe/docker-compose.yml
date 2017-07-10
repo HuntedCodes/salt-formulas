@@ -1,0 +1,16 @@
+version: '2'
+services:
+  pxe:
+    build: .
+    image: pxe
+    network_mode: "host"
+    ports:
+      - "67/udp"
+      - "69/udp"
+    cap_add:
+      - NET_ADMIN  # Required for ARP cache modification
+    volumes:
+      - ./dnsmasq/etc:/data/etc:ro
+      - ./dnsmasq/dhcp:/data/dhcp
+      - ./dnsmasq/tftp:/data/tftp:ro
+    container_name: pxe

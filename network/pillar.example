@@ -1,0 +1,18 @@
+# Network manager should be disabled for VLAN trunking.
+network:
+  forward_ipv4: True
+  interface:
+    manual: 
+      - eth1
+      - eth2
+    dhcp:
+      - eth0
+    vlan:
+      trunk_bridge:
+        eth1:
+          - 100
+          - 101
+        eth2:
+          - 200
+          - 201
+  network_manager: False

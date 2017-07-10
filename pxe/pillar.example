@@ -1,0 +1,12 @@
+# Network interfaces
+network:
+  management:
+    nic: "management_br"
+    ipv4:
+      ip: "10.2.1.1"
+      net: "10.2.1"
+
+
+# PXE configuration
+pxe:
+  dhcp_boot: "pxelinux.0"

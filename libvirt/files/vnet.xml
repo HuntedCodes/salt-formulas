@@ -1,0 +1,15 @@
+<network>
+  <name>{{vnet}}</name>
+  <uuid>{{uuid}}</uuid>
+  <forward dev='{{phys_nic}}' mode='{{ mode }}'>
+    <interface dev='{{phys_nic}}'/>
+  </forward>
+  <bridge name='{{bridge_nic}}' stp='on' delay='0'/>
+  <mac address='{{mac}}'/>
+  <domain name='{{vnet}}'/>
+  <ip address='{{ipv4}}' netmask='255.255.255.0'>
+    <dhcp>
+      <range start='{{dhcp_start}}' end='{{dhcp_end}}'/>
+    </dhcp>
+  </ip>
+</network>

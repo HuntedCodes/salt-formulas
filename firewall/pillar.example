@@ -1,0 +1,20 @@
+# Listed NAT interfaces will be added. Unlisted will be deleted.
+firewall:
+  ipv4:
+    policy_drop:
+      - INPUT
+    policy_accept:
+      - OUTPUT
+      - FORWARD
+    related_in:
+      - eth0
+    nat:
+      - eth0
+    forward_all:
+      - management_br
+      - client_br
+  ipv6:
+    policy_drop:
+      - INPUT
+      - OUTPUT
+      - FORWARD

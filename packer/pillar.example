@@ -1,0 +1,9 @@
+hypervisor:
+  default_user: vagrant
+  default_password: aut0mati0n
+  vm_template:
+    debian-jessie-8:
+      disk_image_name: debian-jessie-8.qcow2
+      packer:
+        template_name: debian-jessie-8
+        disk_size: 5000

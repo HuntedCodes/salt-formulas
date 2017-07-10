@@ -1,0 +1,59 @@
+{
+  "variables": {
+      "template_name": "${template_name}",
+      "disk_image_name": "${disk_image_name}",
+      "disk_size": "${disk_size}",
+      "user": "${default_user}",
+      "password": "${default_password}",
+      "domain": "",
+      "output_dir": "${output_dir}"
+  },
+
+  "builders": [
+    {
+      "iso_url": "http://cdimage.debian.org/mirror/cdimage/archive/8.7.1/amd64/iso-cd/debian-8.7.1-amd64-CD-1.iso",
+      "iso_checksum": "065c90fa72ed51b7ce06ecfdc660b083e7b0c40bbf63fd58559c8bf7df7752da",
+      "iso_checksum_type": "sha256",
+
+      "type": "qemu",
+      "accelerator": "kvm",
+
+      "vm_name": "{{ user `disk_image_name` }}",
+      "disk_size": "{{ user `disk_size` }}",
+      "disk_interface": "virtio",
+      "format": "qcow2",
+      "net_device": "virtio-net",
+
+      "headless": true,
+      "http_directory": "boot",
+      "boot_wait": "2s",
+      "boot_command": [
+        "<esc><wait><wait>",
+        "install ",
+
+        "auto ",
+        "priority=critical ",
+        "url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed/debian-jessie-8.cfg ",
+
+        "locale=en_US.UTF-8 ",
+        "keyboard-configuration/xkb-keymap=us ",
+        "interface=auto ",
+
+        "passwd/user-fullname={{ user `user` }} ",
+        "passwd/username={{ user `user` }} ",
+        "passwd/user-password={{ user `password` }} ",
+        "passwd/user-password-again={{ user `password` }} ",
+
+        "<enter>"
+      ],
+      "shutdown_command": "echo '{{ user `password` }}' | sudo -S shutdown -h now",
+
+      "ssh_username": "{{ user `user` }}",
+      "ssh_password": "{{ user `password` }}",
+      "ssh_wait_timeout": "60m",
+
+      "output_directory": "{{ user `output_dir` }}"
+
+    }
+  ]
+}

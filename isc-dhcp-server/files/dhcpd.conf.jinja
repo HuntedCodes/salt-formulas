@@ -1,0 +1,58 @@
+{% set defaults = pillar['dhcp']['server']['subnet_default'] %}
+{%- for subnet, args in pillar['dhcp']['server']['subnet'].items() -%}
+{%- set prefix = args.prefix -%}
+{%- if args.suffix is undefined -%}
+  {%- set suffix = defaults.suffix -%}
+{%- else -%}
+  {%- set suffix = args.suffix -%}
+{%- endif -%}
+{%- if args.netmask is undefined -%}
+  {%- set netmask = defaults.netmask -%}
+{%- else -%}
+  {%- set netmask = args.netmask -%}
+{%- endif -%}
+{%- if args.router is undefined -%}
+  {%- set router = defaults.router -%}
+{%- else -%}
+  {%- set router = args.router -%}
+{%- endif -%}
+{%- if args.broadcast is undefined -%}
+  {%- set broadcast = defaults.broadcast -%}
+{%- else -%}
+  {%- set broadcast = args.broadcast -%}
+{%- endif -%}
+{%- if args.pool_start is undefined -%}
+  {%- set pool_start = defaults.pool_start -%}
+{%- else -%}
+  {%- set pool_start = args.pool_start -%}
+{%- endif -%}
+{%- if args.pool_end is undefined -%}
+  {%- set pool_end = defaults.pool_end -%}
+{%- else -%}
+  {%- set pool_end = args.pool_end -%}
+{%- endif -%}
+{%- if args.dns_server is undefined -%}
+  {%- set dns_server = salt['pillar.get']('dhcp:server:subnet_default:dns_server') -%}
+{%- else -%}
+  {%- set dns_server = args.dns_server -%}
+{%- endif -%}
+subnet {{prefix}}.{{suffix}} netmask {{netmask}} {
+    range {{prefix}}.{{pool_start}} {{prefix}}.{{pool_end}};
+    option subnet-mask {{netmask}};
+    option routers {{prefix}}.{{router}};
+    option broadcast-address {{prefix}}.{{broadcast}};
+    option domain-name-servers {{dns_server|join(', ')}};
+}
+
+{% endfor %}
+
+# DHCP
+authoritative;
+default-lease-time 600;
+max-lease-time 7200;
+
+# DNS
+ddns-update-style none;
+
+# Logging
+log-facility local7;

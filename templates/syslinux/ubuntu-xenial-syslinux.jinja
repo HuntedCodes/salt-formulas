@@ -1,0 +1,57 @@
+# http://www.syslinux.org/wiki/index.php?title=Doc/syslinux#CONFIGURATION_FILE
+
+# Sets the default command line. If SYSLINUX boots automatically, it will
+# act just as if the entries after DEFAULT had been typed in at the "boot:"
+# prompt.
+DEFAULT auto_ubuntu_xenial
+
+
+# Indicates how long to wait at the boot: prompt until booting automatically,
+# in units of 1/10 s.
+#
+# A timeout of zero will disable the timeout completely, this is also the default.
+TIMEOUT 1
+
+
+################################################################################
+
+# Specifies which KERNEL and APPEND options to use.
+LABEL auto_ubuntu_xenial
+
+
+# The path of the kernel to boot, relative to the TFTP root.
+KERNEL ubuntu/xenial/ubuntu-installer/amd64/linux
+
+
+# http://www.syslinux.org/wiki/index.php?title=Config#APPEND
+#   Add one or more options to the kernel command line.
+#   These are added to both, automatic and manual boots.
+#
+#   The options are added at the very beginning of the kernel command line,
+#   usually permitting explicitly-entered kernel options to override them.
+#
+#   Each APPEND statement shall not span multiple lines; it must be solely
+#   on a single line in the configuration file. If you enter multiple APPEND
+#   statements in a single LABEL entry, only the last one will be used.
+#
+# auto                       Set the installation to automatic.
+#
+# priority                   The debconf priority.
+#
+# initrd                     TFTP path to initial RAM disk (preboot environment).
+#
+# url                        URL to the preseed file for answering installation
+#                            questions.
+#
+# locale                     The machine's localization. Required to get to
+#                            the network configuration step.
+#
+# interface                  Make sure this is set to the correct interface,
+#                            or "auto" if unsure.
+#
+# hostname                   Set the hostname, or just "unassigned" to skip.
+#
+APPEND auto priority=critical initrd=ubuntu/xenial/ubuntu-installer/amd64/initrd.gz url=tftp://10.2.1.1/preseed/ubuntu-xenial-preseed.cfg locale=en_US.UTF-8 interface=auto hostname=unassigned DEBCONF_DEBUG=5
+
+# http://ghantoos.org/2012/10/21/cocktail-of-pxe-debian-preseed-ipmi-puppet/
+IPAPPEND 2

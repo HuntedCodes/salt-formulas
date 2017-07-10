@@ -1,0 +1,48 @@
+secret:
+  default_user: myuser
+  default_password: mypassword
+
+salt_master_host: salt.mydomain
+
+packer:
+  packer_dir: /srv/packer
+  output_subdir: images
+  template:
+    myvm1:
+      abstract_template: debian-jessie-8
+      disk_image_name: myvm1.qcow2
+      disk_size: 5000
+
+hypervisor:
+  disk_image_dir: /srv/salt-images
+  external_nic: eth0
+  vm_instance:
+    myvm1:
+      cpu: 2
+      mem: 512
+      direct_nic: eth2
+      hostname: myvm1
+      domain: my.domain
+      os: linux
+      distro: debianwheezy
+      auto: True
+      force: True
+      packer: True
+    myvm2:
+      cpu: 2
+      mem: 512
+      network: myvmnet
+      os: linux
+      distro: debianwheezy
+      auto: True
+      force: True
+      packer: True
+  vnet:
+    myvmnet:
+      mode: route
+      bridge_nic: virbr0
+      mac: 55:55:55:55:55:55
+      ipv4: 192.168.200.1
+      dhcp_start: 192.168.200.100
+      dhcp_end: 192.168.200.150
+      auto: true

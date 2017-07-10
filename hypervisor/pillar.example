@@ -1,0 +1,31 @@
+# Hypervisor network interfaces
+network:
+  management:
+    nic: "management_br"
+    ipv4:
+      ip: "10.2.1.1"
+      net: "10.2.1"
+  server:
+    nic: "server_br"
+    ipv4:
+      ip: "10.2.2.1"
+      net: "10.2.2"
+  client:
+    nic: "client_br"
+    ipv4:
+      ip: "10.2.3.1"
+      net: "10.2.3"
+
+# Hypervisor VMs
+hypervisor:
+  vm:
+    my-client-vm1:
+      cpu: 1
+      mem: 748
+      disk_size: 5555
+      nic: client
+    my-server-vm2:
+      cpu: 2
+      mem: 999
+      disk_size: 1111
+      nic: server

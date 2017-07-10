@@ -1,0 +1,3 @@
+openvpn:
+  network_manager:
+    profile_name: "MyVPN"

@@ -1,0 +1,137 @@
+#######################################
+# Locale, country and keyboard settings
+#######################################
+
+# Locale
+d-i debian-installer/locale string en_US
+d-i debian-installer/keymap string us
+d-i console-setup/ask_detect boolean false
+d-i console-setup/modelcode string pc105
+d-i console-setup/variant USA
+d-i console-setup/layout USA
+d-i console-setup/layoutcode string us
+# for Debian 7 and later
+d-i keymap select us
+
+# Timezone and clock
+d-i time/zone string UTC
+d-i clock-setup/utc boolean true
+d-i clock-setup/ntp boolean true
+
+
+#######################################
+# Networking during installation
+#######################################
+
+# Skipping DHCP configuration
+#d-i netcfg/dhcp_failed note
+#d-i netcfg/dhcp_options select Configure network manually
+
+# Static network configuration.
+#d-i netcfg/get_ipaddress string 192.168.1.42
+#d-i netcfg/get_netmask string 255.255.255.0
+#d-i netcfg/get_gateway string 192.168.1.1
+#d-i netcfg/get_nameservers string 192.168.1.1
+#d-i netcfg/confirm_static boolean true
+
+
+#######################################
+# Users and passwords
+#######################################
+
+d-i user-setup/allow-password-weak boolean false
+
+# Create root account
+#d-i passwd/root-login boolean false
+d-i passwd/root-password password aut0mati0n
+d-i passwd/root-password-again password aut0mati0n
+
+# Create user account
+d-i passwd/make-user boolean true
+d-i passwd/user-uid string 1000
+d-i passwd/user-fullname string debian
+d-i passwd/username string debian
+d-i passwd/user-password password aut0mati0n
+d-i passwd/user-password-again password aut0mati0n
+
+# Passwords as hashes instead of plaintext.
+#   makepasswd --crypt --clearfrom=- <<<  aut0mati0n
+#d-i passwd/root-password-crypted password [crypt(3) hash]
+#d-i passwd/root-password-again-crypted password [crypt(3) hash]
+#d-i passwd/user-password-crypted password [crypt(3) hash]
+#d-i passwd/user-password-again-crypted password [crypt(3) hash]
+
+
+#######################################
+# Disk partitioning
+#######################################
+
+# Select entire disk with logical volume manager (LVM)
+d-i partman-auto/method string lvm
+d-i partman-lvm/device_remove_lvm boolean true
+d-i partman-md/device_remove_md boolean true
+d-i partman-lvm/confirm boolean true
+d-i partman-lvm/confirm_nooverwrite boolean true
+d-i partman-auto/choose_recipe select atomic
+d-i partman-partitioning/confirm_write_new_label boolean true
+d-i partman/choose_partition select finish
+d-i partman/confirm boolean true
+d-i partman/confirm_nooverwrite boolean true
+
+
+#######################################
+# Packages
+#######################################
+
+# Automatic updates
+#   none                - no automatic updates
+#   unattended-upgrades - only security updates
+#d-i pkgsel/update-policy select none
+d-i pkgsel/update-policy select unattended-upgrades
+
+# Whether to upgrade packages after debootstrap.
+# Allowed values: none, safe-upgrade, full-upgrade
+#d-i pkgsel/upgrade select none
+
+# Minimal packages.
+#tasksel tasksel/first multiselect
+# Standard packages.
+tasksel tasksel/first multiselect standard
+# Desktop packages.
+#tasksel tasksel/desktop multiselect standard
+
+# Install packages
+d-i pkgsel/include string sudo vim tmux openssh-server salt-common salt-minion
+
+# Omit packages
+d-i pkgsel/install-language-support boolean false
+
+# Update the DB after installation
+d-i pkgsel/updatedb boolean true
+
+
+#######################################
+# Bootloader
+#######################################
+
+# Install GRUB to the MBR
+d-i grub-installer/only_debian boolean true
+
+# Install grub to the first device
+d-i grub-installer/bootdev  string default
+# Specify device for grub installation
+#d-i grub-installer/bootdev  string /dev/sda
+
+
+#######################################
+# Other items
+#######################################
+
+# Autoload non-free firmware
+#d-i hw-detect/load_firmware boolean true
+
+# Don't phone home
+popularity-contest popularity-contest/participate boolean false
+
+# Avoid that last message about the install being complete.
+d-i finish-install/reboot_in_progress note

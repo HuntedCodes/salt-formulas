@@ -1,0 +1,6 @@
+deb http://mirrors.ocf.berkeley.edu/debian/ jessie main
+deb http://mirrors.ocf.berkeley.edu/debian/ jessie-backports main
+deb-src http://mirrors.ocf.berkeley.edu/debian/ jessie main contrib non-free
+
+deb http://security.debian.org/ jessie/updates main contrib non-free
+deb-src http://security.debian.org/ jessie/updates main contrib non-free

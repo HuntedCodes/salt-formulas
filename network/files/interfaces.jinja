@@ -1,0 +1,41 @@
+# Managed by SaltStack formulas
+
+
+# Loopback
+auto lo
+iface lo inet loopback
+
+{% if pillar['network']['interface'] is defined %}
+{%- set interfaces = pillar['network']['interface'] -%}
+{% if interfaces['dhcp'] is defined %}
+# Dynamically configured interfaces
+{% for interface in interfaces['dhcp'] -%}
+auto {{interface}}
+iface {{interface}} inet dhcp
+
+{% endfor %}
+{%- endif -%}
+
+{% if interfaces['manual'] is defined %}
+# Manual interfaces with no IP configuration
+{% for interface in interfaces['manual'] -%}
+auto {{interface}}
+iface {{interface}} inet manual
+
+{% endfor %}
+{%- endif -%}
+
+{%- if interfaces['vlan'] is defined -%}
+{% if interfaces['vlan']['trunk_bridge'] is defined %}
+# VLAN Trunk Bridges
+{% for trunk, vlans in interfaces['vlan']['trunk_bridge'].items() %}
+{%- for vlan in vlans -%}
+auto {{trunk}}.{{vlan}}
+iface {{trunk}}.{{vlan}} inet manual
+  vlan-raw-device {{trunk}}
+
+{% endfor %}
+{%- endfor -%}
+{%- endif -%}
+{%- endif -%}
+{%- endif -%}
